@@ -19,33 +19,47 @@ $(document).ready(() => {
   $('#espaceClient').click(() => {
     window.location.href = "?espaceClient";
   });
-  // Sélectionnez le formulaire de déconnexion
-  const logoutForm = $('form[action="../controllers/logout.php"]');
+// Sélectionnez le formulaire de déconnexion
+const logoutForm = $('#deconnexionForm');
 
-  // Lorsque le formulaire de déconnexion est soumis
-  logoutForm.submit((e) => {
-    // Empêcher le comportement par défaut du formulaire
-    e.preventDefault();
+// Lorsque le formulaire de déconnexion est soumis
+logoutForm.submit((e) => {
+  // Empêcher le comportement par défaut du formulaire
+  e.preventDefault();
 
-    // Désactivez le bouton de déconnexion
-    $('button[type="submit"]').prop('disabled', true);
+  // Désactivez le bouton de déconnexion
+  $('button[type="submit"]').prop('disabled', true);
 
-    // Déclarez la variable countdown à l'extérieur de la fonction setInterval
-    let countdown = 5; // Compte à rebours initial en secondes
+  // Déclarez la variable countdown à l'extérieur de la fonction setInterval
+  let countdown = 5; // Compte à rebours initial en secondes
 
-    // Affichez le compte à rebours
-    const countdownInterval = setInterval(() => {
-      // Affichez le message de compte à rebours
-      $('#countdownMessage').text(`Vous serez déconnecté dans ${countdown} secondes.`);
+  // Affichez le compte à rebours
+  const countdownInterval = setInterval(() => {
+    // Affichez le message de compte à rebours
+    $('#countdownMessage').text(`Vous serez déconnecté dans ${countdown} secondes.`);
 
-      // Décrémentez le compte à rebours
-      countdown--;
+    // Décrémentez le compte à rebours
+    countdown--;
 
-      // Si le compte à rebours atteint 0, redirigez vers l'index
-      if (countdown === 0) {
-        clearInterval(countdownInterval); // Arrêtez le compte à rebours
-        logoutForm[0].submit(); // Soumettez le formulaire de déconnexion
-      }
-    }, 1000); // Exécutez toutes les 1000 millisecondes (1 seconde)
-  });
+    // Si le compte à rebours atteint 0, effectuez la déconnexion via AJAX
+    if (countdown === 0) {
+      clearInterval(countdownInterval); // Arrêtez le compte à rebours
+
+      // Effectuez une requête AJAX vers logout.php
+      $.ajax({
+        url: './controllers/logout.php',
+        type: 'POST',
+        success(response) {
+          // Déconnexion réussie, effectuer des actions supplémentaires si nécessaire
+          // Redirigez vers l'index
+          window.location.href = '?acceuil';
+        },
+        error(XHR, textStatus, errorThrown) {
+          // Gérer les erreurs de requête AJAX si nécessaire
+          console.log(textStatus, errorThrown);
+        }
+      });
+    }
+  }, 1000); // Exécutez toutes les 1000 millisecondes (1 seconde)
+});
 });

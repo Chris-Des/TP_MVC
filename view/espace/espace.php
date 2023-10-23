@@ -16,8 +16,8 @@ if (!isset($_SESSION['username'])) {
         <p>Mot de passe : <?php echo $_SESSION['password_hash']; ?></p>
         <p>Compte créé le : <?php echo $_SESSION['created_at']; ?></p>
 
-        <form action="/controllers/logout.php" method="post">
-            <button type="submit" class="btn btn-primary">Déconnexion</button>
+        <form action="/controllers/logout.php" method="POST" id="deconnexionForm">
+            <button type="submit" class="btn btn-primary" name="deconnexion">Déconnexion</button>
         </form>
     </div>
     <p id="countdownMessage"></p>

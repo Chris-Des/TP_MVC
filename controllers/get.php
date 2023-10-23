@@ -14,6 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // Check if the request method is GE
 
         $user = $stmt->fetch(); // Fetch the first row of the query result
 
+        if ($stmt->rowCount() === 0) {
+            echo json_encode(['message' => 'L\'utilisateur' . $identifier . ' n\'existe pas.']); // Display an error message in JSON format if the user does not exist
+            exit;
+        }
         // Check if a user is found and the password matches
         if ($user && password_verify($password, $user['password_hash'])) {
             $nom = $user['username']; // Get the username of the found user

@@ -16,10 +16,8 @@
         <?php 
             if (isset($_GET['inscription'])) {
                 include './view/espace/inscription.php';
-                include './controllers/post.php';
             } else if (isset($_GET['connexion'])) {
                 include './view/espace/connexion.php';
-                include './controllers/get.php';
             } else if (isset($_GET['espaceClient'])) {
                 include './view/espace/espace.php';
             } else {
