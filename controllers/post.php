@@ -2,6 +2,7 @@
 require dirname(__DIR__) . '/src/assets/db/login.php';
 require dirname(__DIR__) . '/model/user.php';
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['username'];
     $email = $_POST['email'];
@@ -10,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
     $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{10,}$/';
     $usernameMinLength = 5;
+
 
     if (!preg_match($emailRegex, $email)) {
         $response = (object) [
@@ -71,29 +73,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $insertSql = "INSERT INTO user (username, email, password_hash) VALUES (:username, :email, :password_hash);";
-        $insertStmt = $pdo->prepare($insertSql);
-        $insertStmt->execute([
-            ':username' => $nom,
-            ':email' => $email,
-            ':password_hash' => $hashedPassword
-        ]);
-
-        $response = (object) [
-            'success' => true,
-            'message' => 'Inscription réussie !'
-        ];
-        echo json_encode($response);
-        exit;
-    } catch (PDOException $e) { 
-        $response = (object) [
-            'success' => false,
-            'message' => 'Une erreur s\'est produite. Veuillez réessayer.'
-        ];
-        echo json_encode($response);
-        var_dump($e);
-        exit;
+            // Créer une instance de la classe User
+            $user = new User($nom, $email, $password);
+        
+            // Utiliser les méthodes pour obtenir les valeurs de l'utilisateur
+            $nom = $user->setNom();
+            $email = $user->setEmail();
+            $password = $user->setPassword();
+        
+        
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+            $insertSql = "INSERT INTO user (username, email, password_hash) VALUES (:username, :email, :password_hash);";
+            $insertStmt = $pdo->prepare($insertSql);
+            $insertStmt->execute([
+                ':username' => $nom,
+                ':email' => $email,
+                ':password_hash' => $hashedPassword
+            ]);
+        
+            $response = (object) [
+                'success' => true,
+                'message' => 'Inscription réussie !'
+            ];
+            echo json_encode($response);
+            exit;
+        } catch (PDOException $e) { 
+            $response = (object) [
+                'success' => false,
+                'message' => 'Une erreur s\'est produite. Veuillez réessayer.'
+            ];
+            echo json_encode($response);
+            var_dump($e);
+            exit;
+        }
     }
-}

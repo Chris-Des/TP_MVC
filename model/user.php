@@ -1,10 +1,10 @@
 <?php
 class User {
-    private $userId;
-    private $nom;
-    private $email;
-    private $password;
-    private $createdAt;
+    public $userId;
+    public $nom;
+    public $email;
+    public $password;
+    public $createdAt;
 
     // Constructor: creates a new User object with the provided name, email, and password
     public function __construct($nom, $email, $password) {
