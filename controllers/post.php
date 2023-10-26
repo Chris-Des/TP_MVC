@@ -77,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = new User($nom, $email, $password);
         
             // Utiliser les méthodes pour obtenir les valeurs de l'utilisateur
-            $nom = $user->setNom();
-            $email = $user->setEmail();
-            $password = $user->setPassword();
+            $user->setNom($nom);
+            $user->setEmail( $email );
+            $user->setPassword($password);
         
         
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
