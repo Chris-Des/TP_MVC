@@ -10,7 +10,7 @@ class User {
     public function __construct($nom, $email, $password) {
         $this->nom = $nom; // Set the name of the user
         $this->email = $email; // Set the email of the user
-        $this->setPassword($password); // Set the password of the user using the setPassword method
+        $this->setPassword($password); // Set the password of the user copie using the setPassword method
         $this->createdAt = date('Y-m-d H:i:s'); // Set the creation date of the user to the current date and time
     }
 
